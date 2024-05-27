@@ -1,5 +1,8 @@
 import * as hono from "https://deno.land/x/hono@v4.3.11/mod.ts";
 import config, { Params, paramsSchema } from "~/config.ts";
+import scrape from "~/scrape.ts";
+import search from "~/search.ts";
+import luxon from "npm:ts-luxon@4.5.2";
 
 /** HTTP Server */
 const app = new hono.Hono();
@@ -34,3 +37,14 @@ app.get("/params", async (c) => {
 Deno.serve({ port: 8080 }, app.fetch);
 
 /** Cron */
+Deno.cron("Scrape and search flight according to stored params", {
+  minute: { every: 1 },
+}, async () => {
+  console.info(
+    `Running scrape and search at ${luxon.DateTime.now().toISO()}`,
+  );
+
+  await scrape();
+
+  await search();
+});

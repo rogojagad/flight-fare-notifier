@@ -5,7 +5,7 @@
     "scrape": "deno run --check -A scrape.ts",
     "search": "deno run --check -A search.ts",
     "get": "deno task scrape && deno task search",
-    "serve": "deno run --check -A --watch --unstable main.ts"
+    "serve": "deno run --check -A --unstable main.ts"
   },
   "lock": true,
   "fmt": {
