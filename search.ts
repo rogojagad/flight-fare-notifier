@@ -1,5 +1,4 @@
 /** Import Deps */
-import response from "~/response.json" with { type: "json" };
 import luxon from "npm:ts-luxon@4.5.2";
 import config from "~/config.ts";
 
