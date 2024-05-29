@@ -44,16 +44,26 @@ const bot = new TelegramBot();
 bot.start();
 
 /** Cron */
-Deno.cron("Scrape and search flight according to stored params", {
-  minute: { every: 1 },
-}, async () => {
-  console.info(
-    `Running scrape and search at ${luxon.DateTime.now().toISO()}`,
-  );
+// Deno.cron("Scrape and search flight according to stored params", {
+//   minute: { every: 1 },
+// }, async () => {
+//   console.info(
+//     `Running scrape and search at ${luxon.DateTime.now().toISO()}`,
+//   );
 
-  await scrape();
+//   await scrape();
 
-  const matchedFlights = await search();
+//   const matchedFlights = await search();
 
-  if (matchedFlights.length) await bot.sendFlightInformation(matchedFlights);
-});
+//   if (matchedFlights.length) await bot.sendFlightInformation(matchedFlights);
+// });
+
+console.info(
+  `Running scrape and search at ${luxon.DateTime.now().toISO()}`,
+);
+
+const flights = await scrape();
+
+const matchedFlights = await search(flights);
+
+if (matchedFlights.length) await bot.sendFlightInformation(matchedFlights);

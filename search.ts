@@ -56,7 +56,7 @@ interface IFlightSearchData {
   };
 }
 
-interface IFlightSearchResponse {
+export interface IFlightSearchResponse {
   data: IFlightSearchData;
 }
 
@@ -71,12 +71,12 @@ export interface IMatchedFlight {
 }
 
 /** Implementations */
-export default async (): Promise<IMatchedFlight[]> => {
+export default async (
+  response: IFlightSearchResponse,
+): Promise<IMatchedFlight[]> => {
   const params = await config.getParams();
 
   if (!params) throw new Error(`Params undefined`);
-
-  const flightSearchData = response as IFlightSearchResponse;
 
   console.info(
     `Searching flights with criteria => ${JSON.stringify(params, null, 2)}`,
@@ -97,7 +97,7 @@ export default async (): Promise<IMatchedFlight[]> => {
     params.maxDepartureTime,
   );
 
-  const matchedFlights = flightSearchData.data.searchList.departureFlights
+  const matchedFlights = response.data.searchList.departureFlights
     // as high priority and affecting further schedules filtering, do this first
     .filter((flight) => {
       // filter only direct flight (no transit)
@@ -138,8 +138,7 @@ export default async (): Promise<IMatchedFlight[]> => {
       arrivalTime:
         `${flight.schedule.arrivalDetail.date} ${flight.schedule.arrivalDetail.time}`,
       fare: flight.fareDetail.cheapestFare,
-      airlines:
-        flightSearchData.data.airlines[flight.schedule.airlineCode].displayName,
+      airlines: response.data.airlines[flight.schedule.airlineCode].displayName,
     }));
 
   return matchedFlights;

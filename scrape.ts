@@ -1,11 +1,12 @@
 import puppeteer from "https://deno.land/x/puppeteer@16.2.0/mod.ts";
 import { cheerio } from "https://deno.land/x/cheerio@1.0.7/mod.ts";
 import config from "~/config.ts";
+import { IFlightSearchResponse } from "~/search.ts";
 
 const MAIN_URL =
   "https://www.tiket.com/ms-gateway/tix-flight-search/v3/search?origin={origin}&originType=CITY&destination={destination}&destinationType=CITY&adult=1&child=0&infant=0&cabinClass=ECONOMY&departureDate={departureDate}&flexiFare=true&resultType=DEPARTURE&searchType=ONE_WAY&returnDate={returnDate}";
 
-export default async () => {
+export default async (): Promise<IFlightSearchResponse> => {
   const params = await config.getParams();
 
   if (!params) throw new Error(`Params undefined`);
@@ -51,5 +52,5 @@ export default async () => {
   const $ = cheerio.load(content);
   const data = $("body").text();
 
-  Deno.writeTextFileSync("response.json", data);
+  return JSON.parse(data);
 };
