@@ -24,12 +24,6 @@ jobs:
       - name: Unzip Chrome
         run: unzip chrome-linux.zip
 
-      - name: Set BROWSER_EXECUTABLE environment variable
-        run: echo "BROWSER_EXECUTABLE=$(pwd)/chrome-linux/chrome" >> $GITHUB_ENV
-
-      - name: Verify BROWSER_EXECUTABLE
-        run: echo $BROWSER_EXECUTABLE
-
       - name: Install Deno
         uses: denoland/setup-deno@v1
         with:
