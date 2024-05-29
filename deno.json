@@ -1,6 +1,6 @@
 {
   "tasks": {
-    "browser:cache": "PUPPETEER_PRODUCT=chrome deno run -A --unstable https://deno.land/x/puppeteer@16.2.0/install.ts",
+    "browser:cache": "deno run -A --unstable https://deno.land/x/puppeteer@16.2.0/install.ts",
     "scrape": "deno run --check -A scrape.ts",
     "search": "deno run --check -A search.ts",
     "get": "deno task scrape && deno task search",

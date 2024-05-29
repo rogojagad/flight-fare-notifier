@@ -6,6 +6,14 @@ import scrape from "~/scrape.ts";
 import search from "~/search.ts";
 import TelegramBot from "~/bot.ts";
 
+/**
+ * Setup Browser Cache
+ *
+ * It's better to run this as a pre-start script. But Deno deployment platform doesn't support this at the moment.
+ */
+
+await import("https://deno.land/x/puppeteer@16.2.0/install.ts");
+
 /** HTTP Server */
 const app = new hono.Hono();
 
@@ -44,26 +52,21 @@ const bot = new TelegramBot();
 bot.start();
 
 /** Cron */
-// Deno.cron("Scrape and search flight according to stored params", {
-//   minute: { every: 1 },
-// }, async () => {
-//   console.info(
-//     `Running scrape and search at ${luxon.DateTime.now().toISO()}`,
-//   );
+Deno.cron("Scrape and search flight according to stored params", {
+  minute: { every: 1 },
+}, async () => {
+  console.info(
+    `Running scrape and search at ${luxon.DateTime.now().toISO()}`,
+  );
 
-//   await scrape();
+  const flights = await scrape();
 
-//   const matchedFlights = await search();
+  if (!flights) {
+    console.error(`Scrape is not running or no data found`);
+    return;
+  }
 
-//   if (matchedFlights.length) await bot.sendFlightInformation(matchedFlights);
-// });
+  const matchedFlights = await search(flights);
 
-console.info(
-  `Running scrape and search at ${luxon.DateTime.now().toISO()}`,
-);
-
-const flights = await scrape();
-
-const matchedFlights = await search(flights);
-
-if (matchedFlights.length) await bot.sendFlightInformation(matchedFlights);
+  if (matchedFlights.length) await bot.sendFlightInformation(matchedFlights);
+});

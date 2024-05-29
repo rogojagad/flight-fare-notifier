@@ -6,10 +6,13 @@ import { IFlightSearchResponse } from "~/search.ts";
 const MAIN_URL =
   "https://www.tiket.com/ms-gateway/tix-flight-search/v3/search?origin={origin}&originType=CITY&destination={destination}&destinationType=CITY&adult=1&child=0&infant=0&cabinClass=ECONOMY&departureDate={departureDate}&flexiFare=true&resultType=DEPARTURE&searchType=ONE_WAY&returnDate={returnDate}";
 
-export default async (): Promise<IFlightSearchResponse> => {
+export default async (): Promise<IFlightSearchResponse | null> => {
   const params = await config.getParams();
 
-  if (!params) throw new Error(`Params undefined`);
+  if (!params) {
+    console.error(`Params undefined`);
+    return null;
+  }
 
   const url = MAIN_URL.replace(
     `{destination}`,
