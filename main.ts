@@ -12,8 +12,6 @@ import TelegramBot from "~/bot.ts";
  * It's better to run this as a pre-start script. But Deno deployment platform doesn't support this at the moment.
  */
 
-await import("https://deno.land/x/puppeteer@16.2.0/install.ts");
-
 /** HTTP Server */
 const app = new hono.Hono();
 
