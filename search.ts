@@ -60,8 +60,18 @@ interface IFlightSearchResponse {
   data: IFlightSearchData;
 }
 
+export interface IMatchedFlight {
+  flightNumber: string;
+  departureAirportCode: string;
+  arrivalAirportCode: string;
+  departureTime: string;
+  arrivalTime: string;
+  fare: number;
+  airlines: string;
+}
+
 /** Implementations */
-export default async () => {
+export default async (): Promise<IMatchedFlight[]> => {
   const params = await config.getParams();
 
   if (!params) throw new Error(`Params undefined`);
@@ -132,5 +142,5 @@ export default async () => {
         flightSearchData.data.airlines[flight.schedule.airlineCode].displayName,
     }));
 
-  console.log(matchedFlights);
+  return matchedFlights;
 };
