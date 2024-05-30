@@ -26,7 +26,17 @@ export default async (): Promise<IFlightSearchResponse | null> => {
       params.returnDate,
     );
 
-  const browser = await puppeteer.launch({});
+  console.info(
+    `Browser executable path: ${Deno.env.get("BROWSER_EXECUTABLE")}`,
+  );
+
+  const browser = await puppeteer.launch({
+    executablePath: Deno.env.get("BROWSER_EXECUTABLE"),
+    args: [
+      "--no-sandbox",
+      "--disable-dev-shm-usage",
+    ],
+  });
   const page = await browser.newPage();
   page.setExtraHTTPHeaders({
     "accept": "*/*",

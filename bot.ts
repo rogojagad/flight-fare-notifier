@@ -38,6 +38,8 @@ export default class TelegramBot {
     const messageBody =
       `Found ${matchedFlights.length} flights match your criteria\n\n${flightInfoMessage}`;
 
+    console.info(messageBody);
+
     await this.bot.api.sendMessage(this.recipientId, messageBody);
   }
 
