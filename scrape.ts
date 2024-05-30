@@ -21,6 +21,8 @@ export default async (): Promise<IFlightSearchResponse | null> => {
     "browser_version": "125", // We support v83 and above. You can choose `latest`, `latest-beta`, `latest-1`, `latest-2` and so on, in this capability
     "build": "puppeteer-build-1",
     "name": "Scrape Ticket", // The name of your test and build. See browserstack.com/docs/automate/puppeteer/organize tests for more details
+    "os": "os x",
+    "os_version": "big sur",
     "browserstack.username": Deno.env.get("BROWSERSTACK_USERNAME"),
     "browserstack.accessKey": Deno.env.get("BROWSERSTACK_ACCESS_KEY"),
   };
