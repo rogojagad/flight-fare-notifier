@@ -18,7 +18,7 @@ export default async (): Promise<IFlightSearchResponse | null> => {
 
   const caps = {
     "browser": "chrome", // You can choose `chrome`, `edge` or `firefox` in this capability
-    "browser_version": "latest", // We support v83 and above. You can choose `latest`, `latest-beta`, `latest-1`, `latest-2` and so on, in this capability
+    "browser_version": "125", // We support v83 and above. You can choose `latest`, `latest-beta`, `latest-1`, `latest-2` and so on, in this capability
     "build": "puppeteer-build-1",
     "name": "Scrape Ticket", // The name of your test and build. See browserstack.com/docs/automate/puppeteer/organize tests for more details
     "browserstack.username": Deno.env.get("BROWSERSTACK_USERNAME"),
