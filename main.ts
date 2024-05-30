@@ -51,7 +51,7 @@ bot.start();
 
 /** Cron */
 Deno.cron("Scrape and search flight according to stored params", {
-  minute: { every: 5 },
+  minute: { every: 2 },
 }, async () => {
   console.info(
     `Running scrape and search at ${luxon.DateTime.now().toISO()}`,
