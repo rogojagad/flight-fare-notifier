@@ -73,6 +73,4 @@ ADD . /app/
 
 RUN deno cache main.ts
 
-RUN deno task browser:cache
-
 CMD ["run", "-A", "--unstable", "main.ts"]

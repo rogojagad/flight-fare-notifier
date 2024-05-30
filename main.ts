@@ -68,3 +68,16 @@ Deno.cron("Scrape and search flight according to stored params", {
 
   if (matchedFlights.length) await bot.sendFlightInformation(matchedFlights);
 });
+// console.info(
+//   `Running scrape and search at ${luxon.DateTime.now().toISO()}`,
+// );
+
+// const flights = await scrape();
+
+// if (!flights) {
+//   console.error(`Scrape is not running or no data found`);
+// } else {
+//   const matchedFlights = await search(flights);
+
+//   if (matchedFlights.length) await bot.sendFlightInformation(matchedFlights);
+// }
