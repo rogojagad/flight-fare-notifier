@@ -54,7 +54,7 @@ Deno.cron("Scrape and search flight according to stored params", {
     const flights = await scrape();
     const matchedFlights = await search(flights);
 
-    if (matchedFlights?.length === 0) {
+    if (matchedFlights?.length !== 0) {
       await bot.sendFlightInformation(matchedFlights);
     }
   } catch (error) {
