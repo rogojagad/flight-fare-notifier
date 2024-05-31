@@ -8,12 +8,12 @@ import { IFlightSearchResponse } from "~/search.ts";
 const MAIN_URL =
   "https://www.tiket.com/ms-gateway/tix-flight-search/v3/search?origin={origin}&originType=CITY&destination={destination}&destinationType=CITY&adult=1&child=0&infant=0&cabinClass=ECONOMY&departureDate={departureDate}&flexiFare=true&resultType=DEPARTURE&searchType=ONE_WAY&returnDate={returnDate}";
 
-export default async (): Promise<IFlightSearchResponse | null> => {
+export default async (): Promise<IFlightSearchResponse> => {
   const params = await config.getParams();
 
   if (!params) {
     console.error(`Params undefined`);
-    return null;
+    throw Error(`Search params not configured`);
   }
 
   const caps = {
@@ -42,6 +42,12 @@ export default async (): Promise<IFlightSearchResponse | null> => {
       params.returnDate,
     );
 
+  /**
+   * Even if we access an API URL, the URL is guarded using Cloudflare to prevent bot.
+   * So, accessing using `fetch` or other simple HTTP client mechanism will result in HTTP Error 403.
+   *
+   * Use Pupetteer to simulate real browser access which could bypass the guarding.
+   */
   const browser = await puppeteer.connect({ browserWSEndpoint });
   const page = await browser.newPage();
 
@@ -50,6 +56,10 @@ export default async (): Promise<IFlightSearchResponse | null> => {
 
   await browser.close();
 
+  /**
+   * Even if we call an API URL, Puppeteer return the body as an HTML with the JSON result in its body
+   * So, need to load the data via DOM.
+   */
   const $ = cheerio.load(content);
   const data = $("body").text();
 

@@ -44,22 +44,26 @@ bot.start();
 
 /** Cron */
 Deno.cron("Scrape and search flight according to stored params", {
-  minute: { every: 15 },
+  minute: { every: 30 },
 }, async () => {
   console.info(
     `Running scrape and search at ${(new Date()).toISOString()}`,
   );
 
-  const flights = await scrape();
+  try {
+    const flights = await scrape();
+    const matchedFlights = await search(flights);
 
-  if (!flights) {
-    console.error(`Scrape is not running or no data found`);
-    return;
+    if (matchedFlights?.length === 0) {
+      await bot.sendFlightInformation(matchedFlights);
+    }
+  } catch (error) {
+    const thrownError = error as Error;
+    console.error(`Error happens, ${thrownError.message}`);
+    console.error(thrownError);
+
+    throw error;
   }
-
-  const matchedFlights = await search(flights);
-
-  if (matchedFlights.length) await bot.sendFlightInformation(matchedFlights);
 });
 
 /** Local Debug Section, Un-comment to run on server start */
