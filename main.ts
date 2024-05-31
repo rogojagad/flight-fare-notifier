@@ -1,16 +1,9 @@
 import * as hono from "https://deno.land/x/hono@v4.3.11/mod.ts";
-import luxon from "npm:ts-luxon@4.5.2";
 
 import config, { Params, paramsSchema } from "~/config.ts";
 import scrape from "~/scrape.ts";
 import search from "~/search.ts";
 import TelegramBot from "~/bot.ts";
-
-/**
- * Setup Browser Cache
- *
- * It's better to run this as a pre-start script. But Deno deployment platform doesn't support this at the moment.
- */
 
 /** HTTP Server */
 const app = new hono.Hono();
@@ -54,7 +47,7 @@ Deno.cron("Scrape and search flight according to stored params", {
   minute: { every: 15 },
 }, async () => {
   console.info(
-    `Running scrape and search at ${luxon.DateTime.now().toISO()}`,
+    `Running scrape and search at ${(new Date()).toISOString()}`,
   );
 
   const flights = await scrape();
@@ -68,6 +61,8 @@ Deno.cron("Scrape and search flight according to stored params", {
 
   if (matchedFlights.length) await bot.sendFlightInformation(matchedFlights);
 });
+
+/** Local Debug Section, Un-comment to run on server start */
 // console.info(
 //   `Running scrape and search at ${luxon.DateTime.now().toISO()}`,
 // );

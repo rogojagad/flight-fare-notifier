@@ -96,7 +96,7 @@ export default async (
     params.maxDepartureTime,
   );
 
-  const matchedFlights = response.data.searchList.departureFlights
+  return response.data.searchList.departureFlights
     // as high priority and affecting further schedules filtering, do this first
     .filter((flight) => {
       // filter only direct flight (no transit)
@@ -118,7 +118,6 @@ export default async (
 
       const isPriceWithinRange = flight.fareDetail.cheapestFare <= maxPrice;
 
-      // filter departure time within desired range
       const { date, time } = flight.schedule.departureDetail;
       const departureTime = luxon.DateTime.fromISO(`${date}T${time}+07:00`); // returned data from API is on UTC+7
 
@@ -139,6 +138,4 @@ export default async (
       fare: flight.fareDetail.cheapestFare,
       airlines: response.data.airlines[flight.schedule.airlineCode].displayName,
     }));
-
-  return matchedFlights;
 };
