@@ -18,12 +18,6 @@ jobs:
       - name: Clone repository
         uses: actions/checkout@v3
 
-      - name: Download Chrome
-        run: curl -o chrome-linux.zip https://storage.googleapis.com/chromium-browser-snapshots/Linux_x64/1022525/chrome-linux.zip
-
-      - name: Unzip Chrome
-        run: unzip chrome-linux.zip
-
       - name: Install Deno
         uses: denoland/setup-deno@v1
         with:
