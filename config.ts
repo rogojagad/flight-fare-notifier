@@ -23,18 +23,15 @@ export type Params = zod.infer<typeof paramsSchema>;
 
 /** Implementations */
 export const PARAMS_KEY = "params";
+const kv = await Deno.openKv();
 
 const setParams = async (params: Params): Promise<boolean> => {
-  const kv = await Deno.openKv();
-
   const result = await kv.set([PARAMS_KEY], params);
 
   return !!result;
 };
 
 const getParams = async (): Promise<Params | null> => {
-  const kv = await Deno.openKv();
-
   return (await kv.get<Params>([PARAMS_KEY])).value;
 };
 
