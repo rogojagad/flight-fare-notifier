@@ -44,7 +44,7 @@ bot.start();
 
 /** Cron */
 Deno.cron("Scrape and search flight according to stored params", {
-  minute: { every: 5 },
+  minute: { every: 60 },
 }, async () => {
   console.info(
     `Running scrape and search at ${(new Date()).toISOString()}`,
