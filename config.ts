@@ -12,10 +12,10 @@ export const paramsSchema = zod.object({
     `Departure date in string, YYYY-MM-DD`,
   ),
   returnDate: zod.string().date().describe(
-    `Return date in string, YYYY-MM-DD`,
+    `Return date in string, YYYY-MM-DD (Currently unused for one way trip, but good to have)`,
   ),
-  minDepartureTime: zod.string().datetime({ offset: true }),
-  maxDepartureTime: zod.string().datetime({ offset: true }),
+  minDepartureTime: zod.string().time(),
+  maxDepartureTime: zod.string().time(),
 });
 
 /** Interfaces Definition */

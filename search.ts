@@ -85,15 +85,16 @@ export default async (
   const desiredArrivalAirportCode = params.destinationAirportCodes;
   const desiredAirlines = params.airlines;
   const maxPrice = params.maxPrice;
+  const departureDate = params.departureDate;
 
   // User inputted time is on UTC+7
   // According to Luxon docs, it is recommended for the server to work on UTC
   // https://tonysamperi.github.io/ts-luxon/docs/#/zones?id=don39t-worry
   const desiredMinDepartureTime = luxon.DateTime.fromISO(
-    params.minDepartureTime,
+    `${departureDate}T${params.minDepartureTime}+07:00`,
   );
   const desiredMaxDepartureTime = luxon.DateTime.fromISO(
-    params.maxDepartureTime,
+    `${departureDate}T${params.maxDepartureTime}+07:00`,
   );
 
   return response.data.searchList.departureFlights
@@ -108,11 +109,11 @@ export default async (
       schedule: flight.schedules[0],
     }))
     .filter((flight) => {
-      const isOnlyDesiredAirlines = desiredAirlines.includes(
+      const isDesiredAirline = desiredAirlines.includes(
         flight.schedule.airlineCode,
       );
 
-      const isOnlyDesiredDepartureAndArrivalAirport =
+      const isDesiredDepartureAndArrivalAirport =
         desiredDepartureAirportCode.includes(flight.departureAirportCode) &&
         desiredArrivalAirportCode.includes(flight.arrivalAirportCode);
 
@@ -125,7 +126,7 @@ export default async (
         desiredMinDepartureTime <= departureTime &&
         departureTime <= desiredMaxDepartureTime;
 
-      return isOnlyDesiredAirlines && isOnlyDesiredDepartureAndArrivalAirport &&
+      return isDesiredAirline && isDesiredDepartureAndArrivalAirport &&
         isDepartureTimeWithinRange && isPriceWithinRange;
     }).map((flight) => ({
       flightNumber: flight.flightSelect,

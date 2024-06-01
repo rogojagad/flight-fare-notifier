@@ -38,7 +38,7 @@ export default async (): Promise<IFlightSearchResponse> => {
       `{departureDate}`,
       params.departureDate,
     ).replace(
-      `{arrivalDate}`,
+      `{returnDate}`,
       params.returnDate,
     );
 
